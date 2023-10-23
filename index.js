@@ -42,15 +42,15 @@ const Colors = [
   "#EFEFC7",
   "#FFFFFF",
 ];
-const PixelWidth = 10;
-const PixelHeight = 10;
+const PixelWidth = 5;
+const PixelHeight = 5;
 
 const colorIndexes = [];
 
-for (let y = 0; y * 10 < canvas.height; y++) {
+for (let y = 0; y * PixelHeight < canvas.height; y++) {
   colorIndexes.push([]);
 
-  for (let x = 0; x * 10 < canvas.width; x++) {
+  for (let x = 0; x * PixelWidth < canvas.width; x++) {
     colorIndexes[colorIndexes.length - 1].push(0);
   }
 }
@@ -59,14 +59,26 @@ colorIndexes.at(-1).forEach((_, x) => {
   colorIndexes[colorIndexes.length - 1][x] = Colors.length - 1;
 });
 
-colorIndexes.forEach((row, y) => {
-  row.forEach((index, x) => {
-    ctx.fillStyle = Colors[index];
-    ctx.fillRect(
-      x * PixelWidth,
-      canvas.height - PixelHeight,
-      PixelWidth,
-      PixelHeight
-    );
+function drawFires() {
+  colorIndexes.forEach((row, y) => {
+    row.forEach((colorIndex, x) => {
+      ctx.fillStyle = Colors[colorIndex];
+      ctx.fillRect(x * PixelWidth, y * PixelHeight, PixelWidth, PixelHeight);
+    });
   });
-});
+}
+
+function spreadFires() {
+  for (let y = colorIndexes.length - 2; y >= 0; y--) {
+    for (let x = 0; x < colorIndexes[0].length; x++) {
+      let newIndex = colorIndexes[y + 1][x] - 1;
+
+      newIndex = Math.max(0, newIndex);
+
+      colorIndexes[y][x] = newIndex;
+    }
+  }
+}
+
+spreadFires();
+drawFires();
