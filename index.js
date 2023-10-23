@@ -45,9 +45,28 @@ const Colors = [
 const PixelWidth = 10;
 const PixelHeight = 10;
 
-// Populates bottom canvas with white line, as they are the "fire generator"
-for (let x = 0; x * PixelWidth < canvas.width; x++) {
-    ctx.fillStyle = Colors.at(-1);
-    ctx.fillRect(x * PixelWidth, canvas.height - PixelHeight, PixelWidth, PixelHeight);
-}
+const colorIndexes = [];
 
+for (let y = 0; y * 10 < canvas.height; y++) {
+  colorIndexes.push([]);
+
+  for (let x = 0; x * 10 < canvas.width; x++) {
+    colorIndexes[colorIndexes.length - 1].push(0);
+  }
+}
+// Populate last row with white color, as they are the "fire generator"
+colorIndexes.at(-1).forEach((_, x) => {
+  colorIndexes[colorIndexes.length - 1][x] = Colors.length - 1;
+});
+
+colorIndexes.forEach((row, y) => {
+  row.forEach((index, x) => {
+    ctx.fillStyle = Colors[index];
+    ctx.fillRect(
+      x * PixelWidth,
+      canvas.height - PixelHeight,
+      PixelWidth,
+      PixelHeight
+    );
+  });
+});
