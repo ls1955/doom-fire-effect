@@ -47,9 +47,9 @@ function spreadFires() {
       let newColorIndex = colorIndexes[y + 1][x] - (rand & 1);
 
       // Interesting effect that spread the fire across right side of screen
-      let newX = x - rand;
+      // let newX = x - rand;
       // The one used in the reference.
-      // let newX = x - rand + 1;
+      let newX = x - rand + 1;
 
       // Clamp the newX and newColorIndex in case it when out of bound.
       newX = Math.min(colorIndexes[0].length - 1, newX)
@@ -60,7 +60,16 @@ function spreadFires() {
   }
 }
 
-setInterval(() => {
+// Removes the fire generator at the bottom of the screen
+function removeFireGenerators() {
+  colorIndexes.at(-1).forEach((_, x) => {
+    colorIndexes.at(-1)[x] = 0;
+  });
+}
+
+let mainInterval = setInterval(() => {
   spreadFires();
   drawFires();
 }, 1000 / 25);
+
+setTimeout(() => removeFireGenerators(), 10000);
