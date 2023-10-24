@@ -42,8 +42,8 @@ const Colors = [
   "#EFEFC7",
   "#FFFFFF",
 ];
-const PixelWidth = 8;
-const PixelHeight = 8;
+const PixelWidth = 5;
+const PixelHeight = 5;
 
 const colorIndexes = [];
 
@@ -69,7 +69,7 @@ function drawFires() {
 }
 
 function spreadFires() {
-  for (let y = colorIndexes.length - 2; y >= 0; y--) {
+  for (let y = 0; y < colorIndexes.length - 1; y++) {
     for (let x = 0; x < colorIndexes[0].length; x += 1) {
       let rand = Math.round(Math.random() * 3) & 3;
       let newIndex = colorIndexes[y + 1][x] - (rand & 1);
@@ -84,4 +84,4 @@ function spreadFires() {
 setInterval(() => {
   spreadFires();
   drawFires();
-}, 300);
+}, 100);
