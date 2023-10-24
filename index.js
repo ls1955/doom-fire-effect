@@ -44,10 +44,18 @@ function spreadFires() {
   for (let y = 0; y < colorIndexes.length - 1; y++) {
     for (let x = 0; x < colorIndexes[0].length; x += 1) {
       let rand = Math.round(Math.random() * 3) & 3;
-      let newIndex = colorIndexes[y + 1][x] - (rand & 1);
+      let newColorIndex = colorIndexes[y + 1][x] - (rand & 1);
 
-      newIndex = Math.max(0, newIndex);
-      colorIndexes[y][x] = newIndex;
+      // Interesting effect that spread the fire across right side of screen
+      let newX = x - rand;
+      // The one used in the reference.
+      // let newX = x - rand + 1;
+
+      // Clamp the newX and newColorIndex in case it when out of bound.
+      newX = Math.min(colorIndexes[0].length - 1, newX)
+      newColorIndex = Math.max(0, newColorIndex);
+
+      colorIndexes[y][newX] = newColorIndex;
     }
   }
 }
